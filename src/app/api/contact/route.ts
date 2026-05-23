@@ -8,9 +8,29 @@ export async function POST(req: Request){
 
     const { name, email, website, message } = body;
 
+    if (!name || !email || !message) {
+      return Response.json(
+        { success: false, error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return Response.json(
+        { success: false, error: "Invalid email format" },
+        { status: 400 }
+      );
+    }
+
+    const toEmail = process.env.CONTACT_EMAIL;
+    if (!toEmail) {
+      throw new Error("CONTACT_EMAIL is not set in environment variables");
+    }
+
     const data = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: ["ashwinagg3@gmail.com"],
+      to: [toEmail],
       subject: `New Portfolio Message from ${name}`,
       replyTo: email,
 
