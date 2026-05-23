@@ -1,26 +1,264 @@
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─────────────────────────────────────────────────
+   Premium Portfolio — Design Tokens
+   ───────────────────────────────────────────────── */
+
+/* ── Light Theme (default) ─────────────────────────────── */
+:root,
+.light {
+  --bg-primary: #f7f6f3;
+  --bg-secondary: #eeedea;
+  --bg-elevated: #ffffff;
+
+  --text-primary: #1a1a1d;
+  --text-secondary: #6b6a67;
+  --text-tertiary: #9b9a97;
+
+  --accent: #5b4cd4;
+  --accent-muted: rgba(91, 76, 212, 0.3);
+  --accent-subtle: rgba(91, 76, 212, 0.06);
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-accent: rgba(91, 76, 212, 0.12);
+
+  --header-bg: rgba(247, 246, 243, 0.6);
+
+  --intro-bg: #f7f6f3;
+  --intro-text: #1a1a1d;
+
+  --grid-line-color: rgba(0, 0, 0, 0.03);
+  --grid-glow-color: rgba(91, 76, 212, 0.03);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Dark Theme ────────────────────── */
+.dark {
+  --bg-primary: #0a0a0c;
+  --bg-secondary: #111114;
+  --bg-elevated: #161619;
+
+  --text-primary: #e8e6e3;
+  --text-secondary: #9b9a97;
+  --text-tertiary: #6b6a67;
+
+  --accent: #6b5ce7;
+  --accent-muted: rgba(107, 92, 231, 0.35);
+  --accent-subtle: rgba(107, 92, 231, 0.08);
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(107, 92, 231, 0.15);
+
+  --header-bg: rgba(10, 10, 12, 0.6);
+
+  --intro-bg: #0a0a0c;
+  --intro-text: #e8e6e3;
+
+  --grid-line-color: rgba(255, 255, 255, 0.025);
+  --grid-glow-color: rgba(107, 92, 231, 0.025);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─────────────────────────────────────────────────
+   Global Base Styles
+   ───────────────────────────────────────────────── */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* ─────────────────────────────────────────────────
+   Selection
+   ───────────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--accent-muted);
+  color: var(--text-primary);
+}
+
+/* ─────────────────────────────────────────────────
+   Scrollbar
+   ───────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ─────────────────────────────────────────────────
+   Tailwind Theme Extension
+   ───────────────────────────────────────────────── */
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+}
+
+/* ─────────────────────────────────────────────────
+   Atmospheric Typography Flicker & Shimmer
+   ───────────────────────────────────────────────── */
+
+@keyframes ambient-breathing {
+
+  0%,
+  100% {
+    opacity: 0.97;
+    filter: brightness(0.98) contrast(0.99);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.02) contrast(1.01);
+  }
+}
+
+@keyframes ambient-flicker {
+
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  47% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  48% {
+    opacity: 0.92;
+    filter: brightness(0.9);
+  }
+
+  49% {
+    opacity: 0.96;
+    filter: brightness(0.95);
+  }
+
+  50% {
+    opacity: 0.9;
+    filter: brightness(0.87);
+  }
+
+  51% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  72% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  72.5% {
+    opacity: 0.94;
+    filter: brightness(0.92);
+  }
+
+  73% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+.animate-ambient-text {
+  animation:
+    ambient-breathing 23s ease-in-out infinite,
+    ambient-flicker 8s ease-in-out infinite;
+
+  animation-fill-mode: both;
+  will-change: opacity, filter;
+}
+
+/* Light mode specific typography flicker */
+@keyframes ambient-breathing-light {
+  0%,
+  100% {
+    opacity: 0.96;
+    filter: brightness(0.98) contrast(0.99);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.01) contrast(1.01);
+  }
+}
+
+@keyframes ambient-flicker-light {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) drop-shadow(0 0 0 transparent);
+  }
+  45% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) drop-shadow(0 0 0 transparent);
+  }
+  45.5% {
+    opacity: 0.94;
+    filter: brightness(0.96) contrast(1.05) drop-shadow(0 2px 10px rgba(0,0,0,0.03));
+  }
+  46% {
+    opacity: 0.98;
+    filter: brightness(0.98) contrast(1.02) drop-shadow(0 0 0 transparent);
+  }
+  46.5% {
+    opacity: 0.88;
+    filter: brightness(0.92) contrast(1.10) drop-shadow(0 6px 20px rgba(0,0,0,0.06));
+  }
+  47% {
+    opacity: 0.96;
+    filter: brightness(0.97) contrast(1.04) drop-shadow(0 2px 5px rgba(0,0,0,0.02));
+  }
+  47.5% {
+    opacity: 0.92;
+    filter: brightness(0.94) contrast(1.08) drop-shadow(0 4px 15px rgba(0,0,0,0.04));
+  }
+  48% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) drop-shadow(0 0 0 transparent);
+  }
+  71% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) drop-shadow(0 0 0 transparent);
+  }
+  71.5% {
+    opacity: 0.95;
+    filter: brightness(0.96) contrast(1.05) drop-shadow(0 4px 12px rgba(0,0,0,0.04));
+  }
+  72% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) drop-shadow(0 0 0 transparent);
+  }
+}
+
+.light .animate-ambient-text {
+  animation:
+    ambient-breathing-light 23s ease-in-out infinite,
+    ambient-flicker-light 8s ease-in-out infinite;
 }
