@@ -2,15 +2,15 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req: Request) {
+export async function POST(req: Request){
   try {
     const body = await req.json();
 
     const { name, email, website, message } = body;
 
-    await resend.emails.send({
+    const data = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: "YOUR_EMAIL@gmail.com",
+      to: ["ashwinagg3@gmail.com"],
       subject: `New Portfolio Message from ${name}`,
       replyTo: email,
 
@@ -24,10 +24,12 @@ export async function POST(req: Request) {
 
           <hr />
 
-          <p>${message}</p>
+          <p>${message.replace(/\n/g, "<br/>")}</p>
         </div>
       `,
     });
+
+    console.log(data);
 
     return Response.json({ success: true });
   } catch (error) {
